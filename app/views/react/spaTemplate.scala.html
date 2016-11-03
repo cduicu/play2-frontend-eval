@@ -1,0 +1,22 @@
+@import utils.CmnUtils
+
+@(content: Html)
+
+@views.html.mainTemplate {
+
+    <script type='text/javascript' src='@routes.Assets.versioned("javascripts/jsutils.js")'></script>
+    <script type='text/javascript' src='@routes.WebJarAssets.at(CmnUtils.getWebJarAssets.locate("moment.min.js"))'></script>
+
+    @if(CmnUtils.getPlayEnvironment.isDev) {
+        <script type='text/javascript' src='@routes.WebJarAssets.at(CmnUtils.getWebJarAssets.fullPath("react", "react.js"))'></script>
+        <script type='text/javascript' src='@routes.WebJarAssets.at(CmnUtils.getWebJarAssets.fullPath("react", "react-dom.js"))'></script>
+    } else {
+        <script type='text/javascript' src='@routes.WebJarAssets.at(CmnUtils.getWebJarAssets.fullPath("react", "react.min.js"))'></script>
+        <script type='text/javascript' src='@routes.WebJarAssets.at(CmnUtils.getWebJarAssets.fullPath("react", "react-dom.min.js"))'></script>
+    }
+    @* Babel is required if you want to put JSX code in templates (not just JSX files) *@
+    <script type='text/javascript' src='@routes.WebJarAssets.at(CmnUtils.getWebJarAssets.locate("babel.min.js"))'></script>
+
+    @content
+
+}

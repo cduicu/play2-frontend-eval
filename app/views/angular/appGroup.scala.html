@@ -1,0 +1,9 @@
+@import play.libs.Json
+
+@(groupName: String, appsInGroup: List[String] )
+
+<div id="appGroup"></div>
+
+<script type="text/babel">
+    var appsInGroup = @Html(Json.stringify(Json.toJson(appsInGroup)));
+</script>

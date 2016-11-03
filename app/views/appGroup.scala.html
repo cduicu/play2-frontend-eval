@@ -1,0 +1,13 @@
+@import models.AppInfo
+
+@(appCfgList: List[AppInfo])
+
+<div class="container">
+    <div class="row">
+        @for(appInfo <- appCfgList) {
+            <div class="col s6 m6">
+            @appCard(appInfo)
+            </div>
+        }
+    </div>
+</div>

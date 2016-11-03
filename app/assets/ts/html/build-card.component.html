@@ -1,0 +1,13 @@
+<div class="card grey lighten-4">
+    <div class="card-content">
+        <span class="card-title">{{title}}: {{buildId}}
+            &nbsp;&nbsp;&nbsp;
+        <a href='{{appInfo.jenkinsUrl}}/{{buildId}}/'>
+            <img src='{{appInfo.jenkinsUrl}}/{{buildId}}/badge/icon'>
+        </a>
+        </span>
+
+
+        <build-content [id]="buildId" [appInfo]="appInfo"></build-content>
+    </div>
+</div>

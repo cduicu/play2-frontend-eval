@@ -1,0 +1,26 @@
+@()
+
+<div class="container">
+    <h3>BuildHub</h3>
+    <div class="col s12">
+        <p>This site intends to present information about the products/projects in our Organization.</p>
+        <p>The information is obtained from Jenkins/SonarCube and other tools used by the builds and centralized
+            in an easy to read format.</p>
+        <p>
+            <ul class="browser-default">
+                The builds are grouped per product. The site currently contains the following groups:
+                <li><a href="@request().path()/foundation">Foundation</a></li>
+                <li><a href="@request().path()/om">Order Management</a></li>
+                <li><a href="@request().path()/provisioning">Provisioning</a></li>
+                <li><a href="@request().path()/cpq">CPQ</a></li>
+            </ul>
+        </p>
+        <p>
+            <ul class="browser-default"><b>Notes</b>
+                <li>The Dashboard is not yet developed ... haven't decided what will go in here.</li>
+                <li>The versions of the projects are currently coming from a configuration file. The intention was to
+                    get the version from the project dynamically but I didn't find a way to do so.</li>
+            </ul>
+        </p>
+    </div>
+</div>

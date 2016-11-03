@@ -1,0 +1,57 @@
+@import com.fasterxml.jackson.databind.JsonNode
+@import utils.CmnUtils
+
+@(app: AppInfo, buildNode: JsonNode, buildId: String)
+
+<div class="card-stacked" xmlns="http://www.w3.org/1999/html">
+    <span class="col s12"><b>Build Name:</b> @buildNode.get("displayName").asText()</span>
+</div>
+<div class="card-stacked">
+    <span class="col s1"><b>Jenkins:</b></span>
+    <span><a href="@app.jenkinsUrl/@buildId/testReport" target="_blank">Test Report</a></span>
+    <span>&nbsp;|&nbsp;<a href="@app.jenkinsUrl/@buildId/console" target="_blank">Build Log</a></span>
+    <span>&nbsp;|&nbsp;<a href="@app.jenkinsUrl/@buildId/changes" target="_blank">Changes</a></span>
+</div>
+
+<div class="card-stacked">
+    <span class="col s1"><b>Maven:</b></span>
+    <span><a target="_blank" href="/ext/@app.group/@app.name/@app.latestVersion/index.html">About</a></span>
+    <span>&nbsp;|&nbsp;<a target="_blank" href="/ext/@app.group/@app.name/@app.latestVersion/dependencies.html">Dependencies</a></span>
+    <span>&nbsp;|&nbsp;<a target="_blank" href="/ext/@app.group/@app.name/@app.latestVersion/apidocs/index.html">JavaDocs</a></span>
+</div>
+
+<div class="card-stacked">
+@defining(CmnUtils.getHubCfg().get("sonarUrl").asText()) { sonarUrl =>
+    <span class="col s1"><b>Sonar:</b></span>
+    <span><a href="@sonarUrl/dashboard/index/@app.sonarId" target="_blank">Dashboard</a></span>
+    <span>&nbsp;|&nbsp;<a href="@sonarUrl/dashboard/index/@app.sonarId?did=2" target="_blank">Hotspots</a></span>
+    <span>&nbsp;|&nbsp;<a href="@sonarUrl/dashboard/index/@app.sonarId?did=3" target="_blank">Issues</a></span>
+}
+</div>
+
+<div class="card-stacked">
+    <span class="col s12"><b>Build Score:</b></span><br>
+    <span>&nbsp;</span>
+    @if(app.healthReportBuild != null) {
+        @statsCard(app.healthReportBuild.score, app.healthReportBuild.description)
+    }
+</div>
+<div class="card-stacked"><span>&nbsp;</span>
+    @if(app.healthReportTest != null) {
+        @statsCard(app.healthReportTest.score, app.healthReportTest.description)
+    }
+</div>
+<div class="card-stacked">
+    <span><b>Duration:</b>
+        @CmnUtils.getDuration(buildNode.get("duration").asLong()) (
+        estimated: @CmnUtils.getDuration(buildNode.get("estimatedDuration").asLong()) )</span>
+</div>
+<div class="card-stacked">
+    <span><b>Branch:</b>
+        @buildNode.path("actions").findValue("lastBuiltRevision").findValue("branch")</span>
+</div>
+<div class="card-stacked">
+    <span><b>Git:</b> @buildNode.path("actions").findValue("remoteUrls")</span>
+</div>
+
+

@@ -1,0 +1,35 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+footer.page-footer {
+    padding-top: 0px;
+}
+
+.product{
+    font-size: 24px;
+    padding: 10px 0 10px 0;
+}
+
+.stats-score {
+    font-size: 18px;
+    font-weight: bold;
+    color: darkgoldenrod;
+    width: 45px;
+    line-height: 20px;
+    float: left;
+    text-align: right;
+}
+.stats-descr {
+
+}
+
+.app-title {
+    margin: 1.46rem 0 1.168rem 0;
+}

@@ -1,0 +1,43 @@
+<ul id="slide-out" class="side-nav">
+    <li>
+        <div class="userView">
+            <img class="background" style="backgroundColor: 'darkcyan'" width="300" height="200"/>
+            <a href="#!name"><span class="white-text name">Messages(appInfo.group + '.projects')</span></a>
+        </div>
+    </li>
+</ul>
+
+<div *ngIf="!appInfo">Messages('appInfo.not.loaded')</div>
+<div *ngIf="appInfo" class="container">
+    <div class="row">
+        <div class="col s10">
+            <h3><a href={{appInfo.url}}>{{appInfo.name}}</a>
+                <span><a href="{{appInfo.jenkinsUrl}}/{{appInfo.lastBuildId}}"><img src="{{appInfo.buildBadge}}"></a></span>
+                <span><img src="{{makeBadgeUrl('latest', appInfo.latestVersion, 'blue')}}"/></span>
+                <span><img src="{{makeBadgeUrl('release', appInfo.releaseVersion, 'blue')}}"/></span>
+            </h3>
+        </div>
+        <div class="col s2 app-title right-align">
+            <a *ngIf="appInfo.appCfg.testServer" class="btn-floating waves-effect waves-light" title="Test Server" href="{{appInfo.appCfg.testServer}}"
+               target="_blank"><i class="material-icons">launch</i></a>
+
+            <a href="#" class="btn-floating button-collapse" data-activates="slide-out">
+                <i class="material-icons">list</i></a>
+        </div>
+    </div>
+
+    <div *ngIf="appInfo.appCfg.description" class="row">
+        <div class="col s12"><i>Description:</i> {{appInfo.appCfg.description}} </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <build-card [appInfo]="appInfo" [buildId]="appInfo.lastBuildId" title="Last Build"></build-card>
+
+            <build-card *ngIf="appInfo.lastFailedBuild" title="Last Failed Build"
+                        [appInfo]="appInfo" [buildId]="appInfo.lastFailedBuild"></build-card>
+            <build-card *ngIf="appInfo.lastSuccessfulBuild" title="Last Successful Build"
+                        [appInfo]="appInfo" [buildId]="appInfo.lastSuccessfulBuild"></build-card>
+        </div>
+    </div>
+</div>

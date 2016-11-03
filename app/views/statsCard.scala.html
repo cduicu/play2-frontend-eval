@@ -1,0 +1,6 @@
+@import utils.CmnUtils
+
+@(score: Int, description: String)
+
+<span class="stats-score @CmnUtils.getScoreColor(score)">@score</span>
+<span>@description</span>

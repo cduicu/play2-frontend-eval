@@ -1,0 +1,12 @@
+@import play.libs.Json
+
+@(groupName: String, appsInGroup: List[String] )
+
+<div id="appGroup"></div>
+
+<script type='text/javascript' src='@routes.Assets.versioned("javascripts/appGroup.js")'></script>
+<script type='text/javascript' src='@routes.Assets.versioned("javascripts/statsCard.js")'></script>
+<script type="text/babel">
+    var appsInGroup = @Html(Json.stringify(Json.toJson(appsInGroup)));
+    ReactDOM.render(<AppGroup groupName="@groupName" appsInGroup={appsInGroup} />, document.getElementById('appGroup'));
+</script>

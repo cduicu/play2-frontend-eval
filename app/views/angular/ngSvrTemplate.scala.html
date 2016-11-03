@@ -1,0 +1,68 @@
+@import utils.CmnUtils
+
+@(content: Html)
+
+<!doctype html>
+<html data-framework="angular2">
+    <head>
+        <title>@Messages("app.title")</title>
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("lib/materialize/dist/css/materialize.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        @* JS Resources *@
+        <script type="text/javascript" src="@routes.Assets.versioned("lib/jquery/jquery.min.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.versioned("lib/materialize/dist/js/materialize.min.js")"></script>
+        @* utility JS libs for formatting *@
+        <script type='text/javascript' src='@routes.Assets.versioned("javascripts/jsutils.js")'></script>
+        <script type='text/javascript' src='@routes.WebJarAssets.at(CmnUtils.getWebJarAssets.locate("moment.min.js"))'></script>
+        @* Angular libs *@
+        <script type='text/javascript' src='@routes.Assets.versioned("lib/angular2/bundles/angular2-polyfills.js")'></script>
+        <script type='text/javascript' src='@routes.Assets.versioned("lib/systemjs/dist/system.js")'></script>
+        <script type='text/javascript' src='@routes.Assets.versioned("lib/typescript/lib/typescript.js")'></script>
+        <script type='text/javascript' src='@routes.Assets.versioned("lib/rxjs/bundles/Rx.js")'></script>
+        <script type='text/javascript' src='@routes.Assets.versioned("lib/angular2/bundles/angular2.dev.js")'></script>
+    </head>
+
+    <body>
+        <nav class="light-blue lighten-1" role="navigation">
+            <div class="nav-wrapper container">
+                <a href="#" class="brand-logo">@Messages("app.title")</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                @views.html.renderMenu(CmnUtils.getMenu, flash().get(CmnUtils.SELECTED_MENU))
+                </ul>
+            </div>
+        </nav>
+
+        <main>
+        @content
+        </main>
+
+        @views.html.footer()
+
+        <script type="text/javascript">
+            @* typescript is async downloaded by SystemJs and transpiled to Javascript in the browser *@
+			System.config({
+			    transpiler: 'typescript',
+                typescriptOptions: { @* these settings of the typescript compiler are required for angular2 *@
+                    emitDecoratorMetadata: true,
+                    experimentalDecorators: true
+                },
+                packages: {
+                    'assets/ts': {
+                        defaultExtension: 'ts' @* the modules of our app are to be downloaded as typescript *@
+                    },
+                    'assets/lib': {
+                        defaultExtension: 'js' @* the libs we depend on are javascript *@
+                    }
+                },
+                map: {
+                    'app' : '/assets/ts' @* play standardly publishes our asset files under /assets *@
+                }
+            });
+            System.import('app/bootstrap').then(null, console.error.bind(console));
+        </script>
+
+    </body>
+</html>

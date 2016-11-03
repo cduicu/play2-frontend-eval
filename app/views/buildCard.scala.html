@@ -1,0 +1,16 @@
+@import models.AppInfo
+
+@(app: AppInfo, title: String, buildId: Int)
+
+<div class="card grey lighten-4">
+    <div class="card-content">
+        <span class="card-title">@title: @buildId
+            &nbsp;&nbsp;&nbsp;
+        <a href='@app.jenkinsUrl/@buildId/'>
+            <img src='@app.jenkinsUrl/@buildId/badge/icon'>
+        </a>
+        </span>
+
+        <div class="build-details" id="@buildId"></div>
+    </div>
+</div>

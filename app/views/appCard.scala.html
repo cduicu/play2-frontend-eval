@@ -1,0 +1,46 @@
+@import models.AppInfo
+@import utils.CmnUtils
+
+@(app: AppInfo)
+
+<div class="card grey lighten-3 hoverable">
+    <div class="card-content">
+        <div class="row">
+            <span class="col s10 card-title"><a href="@app.getUrl()">@app.name</a>&nbsp;&nbsp;
+                <a href="@app.jenkinsUrl/@app.lastBuildId"><img src="@app.getBuildBadge"></a>
+            </span>
+            <span class="col s2">
+            @if(app.appCfg.testServer != null) {
+                <a class="btn-floating waves-effect waves-light" title="Test Server" href="@app.appCfg.testServer" target="_blank">
+                    <i class="material-icons">launch</i></a>
+            }
+            </span>
+        </div>
+
+        <div class="row">
+            @if(app.appCfg.description != null) {
+                <div class="card-stacked">
+                    <i>Description:</i> @app.appCfg.description
+                </div>
+            }
+            <div class="card-stacked">
+                <span><i>Known Versions:</i></span>
+                <span><img src="@CmnUtils.makeBadgeUrl("latest", app.latestVersion, "lightgrey")"></span>
+                <span><img src="@CmnUtils.makeBadgeUrl("release", app.releaseVersion, "lightgrey")"></span>
+            </div>
+            <div class="card-stacked">
+                <i>Build Score</i><br>
+                <span>&nbsp;</span>
+                @if(app.healthReportBuild != null) {
+                    @statsCard(app.healthReportBuild.score, app.healthReportBuild.description)
+                }
+            </div>
+            <div class="card-stacked"><span>&nbsp;</span>
+                @if(app.healthReportTest != null) {
+                    @statsCard(app.healthReportTest.score, app.healthReportTest.description)
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

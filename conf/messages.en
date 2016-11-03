@@ -1,0 +1,13 @@
+app.title=BuildHub
+copyright.text=Made by Cristian Duicu. Most rights reserved.
+
+menu.dashboard=Dashboard
+menu.foundation=Foundation
+menu.provisioning=Provisioning
+menu.om=OM
+menu.cpq=CPQ
+menu.all=All
+
+foundation.projects=Foundation Projects
+provisioning.projects=Provisioning Projects
+om.projects=Order Management Projects

@@ -1,10 +1,10 @@
 # Ignore Play! working directory #
 bin/
-/db
 .eclipse
 /lib/
+/libexec/
 /logs/
-/modules
+/project/project
 /project/target
 /target
 tmp/

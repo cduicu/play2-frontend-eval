@@ -1,0 +1,99 @@
+@import utils.CmnUtils
+
+@(content: Html)
+
+<!doctype html>
+<html data-framework="angular2">
+    <head>
+        <title>@Messages("app.title")</title>
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("lib/materialize/dist/css/materialize.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+        <script type="text/javascript" src="@routes.SingletonController.jsMessages()"></script>
+
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+        @* JS Resources *@
+        <script type="text/javascript" src="@routes.Assets.versioned("lib/jquery/jquery.min.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.versioned("lib/materialize/dist/js/materialize.min.js")"></script>
+        @* utility JS libs for formatting *@
+        <script type='text/javascript' src='@routes.Assets.versioned("javascripts/jsutils.js")'></script>
+        <script type='text/javascript' src='@routes.WebJarAssets.at(CmnUtils.getWebJarAssets.locate("moment.min.js"))'></script>
+        @* Angular libs *@
+        <script type='text/javascript' src='@routes.Assets.versioned("lib/systemjs/dist/system-polyfills.js")'></script>
+        <script type='text/javascript' src='@routes.Assets.versioned("lib/core-js/client/shim.min.js")'></script>
+        <script type='text/javascript' src='@routes.Assets.versioned("lib/zone.js/dist/zone.js")'></script>
+        <script type='text/javascript' src='@routes.Assets.versioned("lib/reflect-metadata/Reflect.js")'></script>
+        <script type='text/javascript' src='@routes.Assets.versioned("lib/systemjs/dist/system.src.js")'></script>
+
+        <script type="text/javascript">
+        @* our app is downloaded as individual javascript files by SystemJs after compilation by sbt-typescript *@
+        var map = {
+            'app': '/assets/ts',
+            '@@angular': 'assets/lib/@@angular',
+            'rxjs': '/assets/lib/rxjs',
+            'symbol-observable': '/assets/lib/symbol-observable'
+            //'angular-in-memory-web-api': '/assets/lib/angular-in-memory-web-api'
+        };
+        var packages = {
+            'app': {defaultExtension: 'js', main: 'main.js'},
+            'rxjs': {defaultExtension: 'js'},
+            'assets/lib': {defaultExtension: 'js'},
+            'symbol-observable': {defaultExtension: 'js', main: 'index.js'}
+            //'angular-in-memory-web-api': {defaultExtension: 'js', main: 'index.js'}
+        };
+        var ngPackageNames = [
+            'common',
+            'compiler',
+            'core',
+            'forms',
+            'http',
+            'platform-browser',
+            'platform-browser-dynamic',
+            'router',
+            'upgrade'
+        ];
+
+        function packIndex(pkgName) {
+            packages['@@angular/' + pkgName] = {main: 'index.js', defaultExtension: 'js'};
+        }
+        function packUmd(pkgName) {
+            packages['@@angular/' + pkgName] = {main: '/bundles/' + pkgName + '.umd.js', defaultExtension: 'js'};
+        }
+        // Most environments should use UMD; some (Karma) need the individual index files
+        function addAngularModulesToMap(pkgName) {
+            map['@@angular/' + pkgName] = '/assets/lib/angular__' + pkgName;
+        }
+
+        // Add package entries for angular packages
+        var setPackageConfig = System.packageWithIndex ? packIndex : packUmd;
+        ngPackageNames.forEach(setPackageConfig)
+
+        // Add map entries for angular packages
+        ngPackageNames.forEach(function (pkgName) {
+            addAngularModulesToMap(pkgName)
+        });
+
+        System.config({map: map, packages: packages});
+        @* SystemJs works out which other modules our app module depends on and will download and load them*@
+        System.import('app').catch(console.error.bind(console));
+        </script>
+    </head>
+
+    <body>
+        <nav class="light-blue lighten-1" role="navigation">
+            <div class="nav-wrapper container">
+                <a href="#" class="brand-logo">@Messages("app.title")</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                @views.html.renderMenu(CmnUtils.getMenu, flash().get(CmnUtils.SELECTED_MENU))
+                </ul>
+            </div>
+        </nav>
+
+        <main>
+        @content
+        </main>
+
+        @views.html.footer()
+    </body>
+</html>

@@ -1,0 +1,64 @@
+@import models.AppInfo
+@import utils.CmnUtils
+
+@(app: AppInfo, appsInSameGroup: List[String])
+@* The side navigation for subprojects *@
+<ul id="slide-out" class="side-nav" xmlns="http://www.w3.org/1999/html">
+    <li><div class="userView">
+        @*<img class="background" src="http://lorempixel.com/350/250/nature">*@
+        <img class="background" style="background-color : darkcyan" width="300" height="200">
+        <a href="#!name"><span class="white-text name">@Messages(app.group + ".projects")</span></a>
+    </div></li>
+    @for(item <- appsInSameGroup) {
+        <li><a href="@item">@item</a></li>
+    }
+</ul>
+
+<div class="container">
+    <div class="row">
+        <div class="col s10">
+            <h3><a href="@app.getUrl()">@app.name</a>
+                <span><a href="@app.jenkinsUrl/@app.lastBuildId"><img src="@app.getBuildBadge"></a></span>
+                <span><img src="@CmnUtils.makeBadgeUrl("latest", app.latestVersion, "blue")"></span>
+                <span><img src="@CmnUtils.makeBadgeUrl("release", app.releaseVersion, "blue")"></span>
+            </h3>
+        </div>
+        <div class="col s2 app-title right-align">
+            @if(app.appCfg.testServer != null) {
+                <a class="btn-floating waves-effect waves-light" title="Test Server" href="@app.appCfg.testServer" target="_blank">
+                    <i class="material-icons">launch</i></a>
+            }
+            <a href="#" class="btn-floating button-collapse" data-activates="slide-out"><i class="material-icons">
+                list</i></a>
+        </div>
+    </div>
+
+    @if(app.appCfg.description != null) {
+        <div class="row">
+            <div class="col s12"><i>Description:</i> @app.appCfg.description</div>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col s12">
+            @buildCard(app, "Last Build", app.lastBuildId)
+
+            @if(app.lastFailedBuild != 0 && app.lastBuildId != app.lastFailedBuild) {
+                @buildCard(app, "Last Failed Build", app.lastFailedBuild)
+            }
+
+            @if(app.lastSuccessfulBuild != 0 && app.lastBuildId != app.lastSuccessfulBuild) {
+                @buildCard(app, "Last Successful Build", app.lastSuccessfulBuild)
+            }
+        </div>
+    </div>
+
+</div>
+
+<script type="application/javascript">
+$(document).ready(function(){
+    $(".button-collapse").sideNav();
+    $('ul.tabs').tabs();
+    $('#' + '@app.lastBuildId').load("/hub/@app.group/@app.name/@app.lastBuildId");
+  });
+</script>

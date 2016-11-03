@@ -1,0 +1,37 @@
+@import utils.CmnUtils
+
+@(content: Html)
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>@Messages("app.title")</title>
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("lib/materialize/dist/css/materialize.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+        <script type="text/javascript" src="@routes.SingletonController.jsMessages()"></script>
+
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    </head>
+
+    <body>
+            <!-- JS Resources -->
+        <script type="text/javascript" src="@routes.Assets.versioned("lib/jquery/jquery.min.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.versioned("lib/materialize/dist/js/materialize.min.js")"></script>
+
+        <nav class="light-blue lighten-1" role="navigation">
+            <div class="nav-wrapper container">
+                <a href="#" class="brand-logo">@Messages("app.title")</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                @views.html.renderMenu(CmnUtils.getMenu, flash().get(CmnUtils.SELECTED_MENU))
+                </ul>
+            </div>
+        </nav>
+
+        <main>
+        @content
+        </main>
+
+        @views.html.footer()
+    </body>
+</html>

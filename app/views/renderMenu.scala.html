@@ -1,0 +1,100 @@
+@import utils.Menu
+@import java.net.URLEncoder
+
+@(menuCfg: Menu, selectedMenu: String)
+
+@{
+    var res = ""
+    for (item <- menuCfg.items ) {
+        if (item.tag.equals("-")) {
+            res += "<li class='divider'></li>\n"
+        } else {
+            var url = if(item.url == null) {
+                "/" + URLEncoder.encode(item.tag, "UTF-8")
+            } else {
+                if(!item.url.startsWith("/")) {
+                    request().path() + "/" + item.url
+                } else {
+                    item.url
+                }
+            }
+            var active = false;
+            //play.Logger.debug("item.tag=" + item.tag + "; selected=" + selectedMenu)
+            if(item.tag.equals(selectedMenu)) {
+                active = true;
+            }
+            if(item.items == null || (item.items != null && !url.equals("#"))) {
+                var style = "";
+                val target = if(item.target == null) {
+                    ""
+                } else {
+                    "target='" + item.target + "'"
+                }
+                if(active) style = " class='active'";
+                res += "<li" + style + "><a href='" + url + "'"+ target +">"
+                if(item.translateTag) {
+                    res += Messages("menu." + item.tag)
+                } else {
+                    res += item.tag
+                }
+                res += "</a></li>\n"
+            } else {
+                var style = "";
+                if(active) style = " active";
+                res += "<li class='dropdown" + style + "'><a href='#' class='dropdown-toggle' data-toggle='dropdown'><b>"
+                if(item.translateTag) {
+                    res += Messages("menu." + item.tag)
+                } else {
+                    res += item.tag
+                }
+                res += "</b><b class='caret'></b></a>\n"
+                res += "<ul class='dropdown-menu'>\n"
+                for(subitem <- item.items) {
+                    if(subitem.items != null) {
+                        var subitemurl = if(subitem.url == null) {
+                            "/" + URLEncoder.encode(item.tag, "UTF-8") + "/" + URLEncoder.encode(subitem.tag, "UTF-8")
+                        } else {
+                            subitem.url
+                        }
+                        val target = if(subitem.target == null) {
+                            ""
+                        } else {
+                            " target='" + subitem.target + "'"
+                        }
+                        res += "  <li><a href='" + subitemurl + "'" + target + ">"
+                        if(item.translateTag) {
+                            res += Messages("menu." + subitem.tag)
+                        } else {
+                            subitem.tag
+                        }
+                        res += "</a></li>\n"
+                    } else {
+                        if (subitem.tag.equals("-")) {
+                            res += "<li class='divider'></li>\n"
+                        } else {
+                            val subitemurl = if(subitem.url == null) {
+                                "/" + URLEncoder.encode(item.tag, "UTF-8") + "/" + URLEncoder.encode(subitem.tag, "UTF-8")
+                            } else {
+                                subitem.url
+                            }
+                            val target = if(subitem.target == null) {
+                                ""
+                            } else {
+                                " target='" + subitem.target + "'"
+                            }
+                            res += "  <li><a href='" + subitemurl + "'" + target + ">"
+                            if(subitem.translateTag) {
+                                res += Messages("menu." + subitem.tag)
+                            } else {
+                                res += subitem.tag
+                            }
+                            res += "</a></li>\n"
+                        }
+                    }
+                }
+                res += "</ul></li>\n"
+            }
+        }
+    }
+    Html(res)
+}

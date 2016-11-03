@@ -1,0 +1,54 @@
+@(content: Html)
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>@Messages("app.title")</title>
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/sky.css")"> @* Polymer Theme - Sky *@
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/cd-polymer.css")"> @* Polymer Theme - Cristian *@
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+        <script type="text/javascript" src="@routes.SingletonController.jsMessages()"></script>
+
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    </head>
+
+    <body>
+            <!-- JS Resources -->
+        <script type="text/javascript" src="@routes.Assets.versioned("lib/jquery/jquery.min.js")"></script>
+
+        @* Add the Polymer stuff *@
+        <link rel="import" href="@routes.Assets.versioned("bower_components/polymer/polymer.html")">
+        <script src="@routes.Assets.versioned("bower_components/webcomponentsjs/webcomponents-lite.js")"></script>
+
+        @* The layout *@
+        <link rel="import" href="@routes.Assets.versioned("bower_components/app-layout/app-header-layout/app-header-layout.html")">
+        <link rel="import" href="@routes.Assets.versioned("bower_components/paper-styles/paper-styles.html")">
+        @*<link rel="import" href="@routes.Assets.versioned("bower_components/iron-flex-layout/iron-flex-layout.html")">*@
+        @*<link rel="import" href="@routes.Assets.versioned("bower_components/paper-icon-button/paper-icon-button.html")">*@
+
+        <style is="custom-style">
+            @* This has to be defined here with "custom-style" or it does not apply. *@
+            .content { @@apply(--layout-flex); margin-left: 64px; margin-right: 64px; }
+            .page-footer { background-color: var(--paper-deep-orange-400); }
+        </style>
+
+        <app-header-layout fullbleed>
+            @views.html.polymer.navHeader()
+
+            <div class="content">
+                @content
+            </div>
+
+            <footer class="page-footer">
+                <app-toolbar>
+                <div spacer class="footer-copyright">
+                    @Messages("copyright.text")
+                </div>
+                </app-toolbar>
+            </footer>
+
+        </app-header-layout>
+
+    </body>
+</html>

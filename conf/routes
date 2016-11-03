@@ -1,0 +1,39 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+#### Standard template based UI
+GET    /                            controllers.AppController.dashboard
+GET    /hub                         controllers.AppController.index
+GET    /hub/allApps                 controllers.AppController.allApps
+GET    /hub/:group                  controllers.AppController.appGroup(group)
+GET    /hub/:group/:name            controllers.AppController.appPage(group, name)
+GET    /hub/:group/:name/:id        controllers.AppController.buildInfo(group, name, id)
+
+#### React based UI
+GET    /react                       controllers.ReactController.index
+GET    /react/:group                controllers.ReactController.appGroup(group)
+GET    /react/:group/:name          controllers.ReactController.appPage(group, name)
+
+#### Angular2 based UI
+GET    /ng                          controllers.AngularController.index
+GET    /ng/:group                   controllers.AngularController.appGroup(group)
+GET    /ng/:group/:name             controllers.AngularController.appPage(group, name)
+
+#### Polymer based UI
+GET    /polymer                     controllers.PolymerController.index
+GET    /polymer/:group              controllers.PolymerController.appGroup(group)
+GET    /polymer/:group/:name        controllers.PolymerController.appPage(group, name)
+
+#### REST API
+GET    /api/group/:group            controllers.RestAppController.appInfoGroup(group)
+GET    /api/app/:name               controllers.RestAppController.appInfo(name)
+GET    /api/build/:name/:buildId    controllers.RestAppController.buildInfoFuture(name, buildId)
+GET    /api/group/:group/list       controllers.RestAppController.appsInGroup(group)
+
+#### Routes common to all approaches
+GET     /messages.js                @controllers.SingletonController.jsMessages
+# Map static resources from the /public folder to the /assets URL path
+GET    /ext/*file                   controllers.ExtAssets.at(file:Asset)
+GET    /assets/*file                controllers.Assets.versioned(path="/public", file: Asset)
+GET    /webjars/*file               controllers.WebJarAssets.at(file)

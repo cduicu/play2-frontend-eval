@@ -1,0 +1,14 @@
+@(groupName: String, appName: String)
+
+<div id="appPage"></div>
+
+<script type='text/javascript' src='@routes.Assets.versioned("javascripts/appPage.js")'></script>
+<script type='text/javascript' src='@routes.Assets.versioned("javascripts/statsCard.js")'></script>
+<script type="text/babel">
+    @*
+    While I hate having babel code in Play templates, I do this because I don't want the JSX file to also
+    know about the template. Also, it affords me the possibility of passing the props.
+    Investigation - how is this precompiled for production (see browser console for warning).
+    *@
+    ReactDOM.render(<AppPage source="/api/app/@appName" />, document.getElementById('appPage'));
+</script>
